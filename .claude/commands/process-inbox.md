@@ -45,8 +45,8 @@ the slug generated from the item text in Case B), same as `/new-note`: hyphens b
 spaces, each word is title-cased, with known acronyms kept properly capitalized per
 `note-schema.md`'s "Deriving a title from a slug" section (e.g. `shopify-api-order-download`
 → `Shopify API Order Download`, not a full sentence and not `Shopify Api Order Download`).
-The original item text (minus tags) goes in the note body's Purpose line instead, so
-detail isn't lost even though the title stays short.
+The original item text (minus tags) goes in the note body's `Starting State` section
+instead, so detail isn't lost even though the title stays short.
 
 ---
 
@@ -61,20 +61,26 @@ Work through each item in the main list (everything above `## Whiteboard`) one a
    - **Open it** — open the note for the user to edit manually, then remove the item from INBOX.
    - **Leave in INBOX** — skip this item and leave it in the list untouched.
 3. **File does not exist** → Create a new project note using the standard frontmatter template
-   (see note-schema.md). Derive `title` from the slug per the rule above. Put the item text
-   (minus all routing tags — `@workspace`, `#slug`, `!N`, `due:`, `dep:`) into the Purpose
-   line in the body. Set `priority` from `!N` if present (default `6` otherwise). Set `due`
-   from `due:` if present (omit the field otherwise). Set `depends-on` from any `dep:`
-   entries (empty list `[]` if none), and mirror each one into the `> [!info]- Dependencies`
-   body callout as `[[<path>|<derived label>]]`, deriving the label the same way the title
-   is derived. Confirm creation to user, then remove the item from INBOX.
+   and the four-section project body structure (see note-schema.md's "Project Note Body
+   Structure" — every note created here has `para: projects`, so it always gets this shape,
+   never the generic Purpose-line body). Derive `title` from the slug per the rule above.
+   Put the item text (minus all routing tags — `@workspace`, `#slug`, `!N`, `due:`, `dep:`)
+   into the `Starting State` section as the raw capture — it's the seed description of why
+   this note exists, not yet a stated goal or plan. Leave `Goal`, `Approach`, and
+   `Problems & Dependencies` as bare placeholder comments for the user to fill in later.
+   Set `priority` from `!N` if present (default `6` otherwise). Set `due` from `due:` if
+   present (omit the field otherwise). Set `depends-on` from any `dep:` entries (empty list
+   `[]` if none), and mirror each one into the `> [!info]- Dependencies` body callout as
+   `[[<path>|<derived label>]]`, deriving the label the same way the title is derived.
+   Confirm creation to user, then remove the item from INBOX.
 
 ### Case B — `@workspace` only (no `#project-slug`)
 
 1. Confirm the workspace folder exists. If not, treat as Case C.
 2. Derive a kebab-case slug from the item text (strip all routing tags, slugify remaining text).
-3. Create a new project note at `<workspace>/projects/<slug>.md` using standard frontmatter,
-   applying `priority`/`due`/`depends-on` from `!N`/`due:`/`dep:` tags exactly as in Case A.
+3. Create a new project note at `<workspace>/projects/<slug>.md` using standard frontmatter
+   and the four-section project body, applying `priority`/`due`/`depends-on` from
+   `!N`/`due:`/`dep:` tags and the `Starting State` placement exactly as in Case A.
 4. Confirm to user, then remove the item from INBOX.
 
 ### Case C — no routing tags
