@@ -37,7 +37,11 @@ brief may be freeform, structured, or anywhere in between:
   phase note. Preserve the order exactly.
 - **goal text**: the content of a `## Goal` section, or the opening paragraph if no
   explicit section exists. May be absent — that's fine.
-- **context text**: the content of a `## Context` section or equivalent. May be absent.
+- **starting state text**: the content of a `## Starting State` section, or a
+  `## Context` section (older brief format) if that's what's present instead. May be absent.
+- **approach text**: the content of an `## Approach` section. May be absent.
+- **problems text**: the content of a `## Problems` or `## Problems & Dependencies`
+  section. May be absent.
 
 **Abort immediately with a clear message if:**
 - `workspace` cannot be determined → "Could not identify workspace. Add `workspace:` to
@@ -128,10 +132,20 @@ sub-projects:
 
 # <project title>
 
+## Starting State
+
+<starting state text from brief, or the placeholder comment below if none was found>
+<!-- What exists today? What does this project NOT do yet? -->
+
 ## Goal
 
 <goal text from brief, or the placeholder comment below if no goal was found>
 <!-- What does success look like when this project is complete? -->
+
+## Approach
+
+<approach text from brief, or the placeholder comment below if none was found>
+<!-- How do we plan to get there? What tools, skills, or scripts are involved? -->
 
 ## Phases
 
@@ -139,18 +153,22 @@ sub-projects:
 - [[<workspace>/projects/<project-slug>/02-<phase-2-slug>|Phase 2: <phase 2 name>]]
 - ...
 
-<include ## Context section only if context text was found in the brief>
-## Context
+## Problems & Dependencies
 
-<context text>
+<problems text from brief, or the placeholder comment below if none was found>
+<!-- What's going to stop us, and what needs to happen first? Include anything
+     elsewhere in the vault this depends on or is affected by. -->
 
 > [!info]- Dependencies
 > <!-- Add [[wikilinks]] here when depends-on or blocked-by is populated -->
 ```
 
 Rules:
-- If no goal was found in the brief, write the placeholder comment only — do not invent content.
-- If no context was found, omit the `## Context` heading entirely.
+- All four section headings (`Starting State`, `Goal`, `Approach`, `Problems & Dependencies`)
+  are always written — this is a living structure meant to be filled in over time, not
+  something to omit when empty.
+- If text for a given section wasn't found in the brief, write its placeholder comment
+  only — do not invent content.
 - Phase wikilink labels must use the format `Phase N: <phase name>` (1-indexed).
 - `sub-projects:` paths use vault-relative format without `.md` extension, same as `depends-on`.
 

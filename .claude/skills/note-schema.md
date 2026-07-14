@@ -148,6 +148,53 @@ The `/new-note` command scaffolds this section automatically.
 
 ---
 
+## Project Note Body Structure
+
+Project notes (`para: projects` — both flat files and `/seed-project` sub-folder
+`index.md`) use this four-section body structure. Treat it as a living document:
+revisit and add to these sections whenever discussing "what should be done next"
+on a project, rather than treating them as a one-time fill-in-the-blanks at creation.
+
+```markdown
+## Starting State
+
+<!-- What exists today? What does this project NOT do yet? -->
+
+## Goal
+
+<!-- What does "complete" look like? A concrete finish line, not a direction. -->
+
+## Approach
+
+<!-- How do we plan to get there? What tools, skills, or scripts are involved?
+     Use a GFM checkbox list here once the plan has concrete steps — this is
+     the actual plan (see Inline TODO Markers below for how that differs from
+     TODO-N: reminders). -->
+
+## Problems & Dependencies
+
+<!-- What's going to stop us, and what needs to happen first? Explain WHY —
+     including anything elsewhere in the vault (other workspaces/projects) that
+     this depends on or is affected by, not just this project in isolation.
+     The depends-on/blocked-by fields + callout below are the machine-readable
+     list; this section is the narrative behind them. -->
+
+> [!info]- Dependencies
+> <!-- Add [[wikilinks]] here when depends-on or blocked-by is populated -->
+```
+
+| Section | Purpose |
+|---|---|
+| `Starting State` | Current state / gap — what's missing or broken right now |
+| `Goal` | Concrete definition of done |
+| `Approach` | The plan — tools, skills, scripts; use checkboxes once steps are concrete |
+| `Problems & Dependencies` | Narrative on blockers/prerequisites, including cross-project/workspace effects — pairs with `depends-on`/`blocked-by` frontmatter and the Dependencies callout |
+
+This applies going forward — add it to existing project notes opportunistically as
+they come up in conversation, no need to backfill the whole vault at once.
+
+---
+
 ## Filename Convention
 
 | Note type | Convention | Example |

@@ -37,9 +37,11 @@ Examples:
    capitalized (e.g. `shopify-api-order-download` → `Shopify API Order Download`, not
    `Shopify Api Order Download`). Example: `shopify-returns` → `Shopify Returns`
 
-5. **Write the file** with this template (fill in all placeholders):
+5. **Write the file** with this template (fill in all placeholders). If `<para-category>`
+   is `projects`, use the project body structure (below); otherwise use the generic body.
 
-```markdown
+**Frontmatter (all categories):**
+```yaml
 ---
 title: "<derived title>"
 created: <today YYYY-MM-DD>
@@ -55,7 +57,10 @@ tags:
 depends-on: []
 blocked-by: []
 ---
+```
 
+**Generic body (`areas` / `resources` / `archive`):**
+```markdown
 # <derived title>
 
 <!-- Purpose: what is this note for? -->
@@ -68,10 +73,37 @@ blocked-by: []
 > <!-- Add [[wikilinks]] here when depends-on or blocked-by is populated -->
 ```
 
+**Project body (`projects`)** — see `note-schema.md`'s "Project Note Body Structure"
+for the full rationale; all four headings are always written, even as bare placeholders:
+```markdown
+# <derived title>
+
+## Starting State
+
+<!-- What exists today? What does this project NOT do yet? -->
+
+## Goal
+
+<!-- What does "complete" look like? A concrete finish line, not a direction. -->
+
+## Approach
+
+<!-- How do we plan to get there? What tools, skills, or scripts are involved? -->
+
+## Problems & Dependencies
+
+<!-- What's going to stop us, and what needs to happen first? Include anything
+     elsewhere in the vault this depends on or is affected by. -->
+
+> [!info]- Dependencies
+> <!-- Add [[wikilinks]] here when depends-on or blocked-by is populated -->
+```
+
 If `--due` was passed, add a `due: <date>` line to frontmatter right after `priority`. Omit the line entirely if `--due` was not passed — never write `due:` with an empty value.
 
 6. **Confirm** to the user: file path created, frontmatter fields set, remind them to:
-   - Fill in the `<!-- Purpose -->` comment
+   - Fill in the `<!-- Purpose -->` comment (generic body) or the Starting State / Goal /
+     Approach / Problems & Dependencies sections (project body)
    - Populate `depends-on` / `blocked-by` if needed, and mirror those as wikilinks in the Dependencies callout
 
 ## Rules
