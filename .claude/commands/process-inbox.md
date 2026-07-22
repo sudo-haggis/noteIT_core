@@ -54,6 +54,19 @@ instead, so detail isn't lost even though the title stays short.
 
 Work through each item in the main list (everything above `## Whiteboard`) one at a time.
 
+### Before classifying: validate `@workspace`, don't take the tag at face value
+
+Quick/mobile captures are typo-prone — `@workspace` tags written away from the vault
+regularly don't match a real folder (`@van` instead of `van_chores`, `@CCNA` when there's
+no such workspace but a `Study/projects/ccna.md` already exists, etc.). Before treating an
+item as Case A or B:
+
+1. Diff the given `@workspace` token against the actual top-level vault folders.
+2. If it doesn't match exactly, don't just fall through to Case C's generic "where should
+   this go?" — proactively suggest the nearest real workspace, and check whether an
+   existing note already covers the topic (see the Case B collision check below). Present
+   that as the first option, not an open-ended question.
+
 ### Case A — `@workspace #project-slug` present
 
 1. Normalize `#project-slug` to kebab-case, then resolve `<workspace>/projects/<project-slug>.md`.
@@ -78,10 +91,17 @@ Work through each item in the main list (everything above `## Whiteboard`) one a
 
 1. Confirm the workspace folder exists. If not, treat as Case C.
 2. Derive a kebab-case slug from the item text (strip all routing tags, slugify remaining text).
-3. Create a new project note at `<workspace>/projects/<slug>.md` using standard frontmatter
-   and the four-section project body, applying `priority`/`due`/`depends-on` from
-   `!N`/`due:`/`dep:` tags and the `Starting State` placement exactly as in Case A.
-4. Confirm to user, then remove the item from INBOX.
+3. **Before creating anything, check for a collision** — a bare `@workspace` capture is
+   often about something that already has a note, even though there's no explicit
+   `#project-slug` pointing at it (e.g. `Bootdev @Study` landing on an already-existing
+   `Study/projects/bootdev.md`). If the derived slug matches an existing file, or an
+   existing note in `<workspace>/projects/` is obviously the same topic, treat it exactly
+   like Case A's "file exists" branch — ask **open it** vs. **leave in INBOX** — rather than
+   silently creating a duplicate note.
+4. **No collision** → create a new project note at `<workspace>/projects/<slug>.md` using
+   standard frontmatter and the four-section project body, applying `priority`/`due`/`depends-on`
+   from `!N`/`due:`/`dep:` tags and the `Starting State` placement exactly as in Case A.
+5. Confirm to user, then remove the item from INBOX.
 
 ### Case C — no routing tags
 
@@ -92,6 +112,35 @@ Work through each item in the main list (everything above `## Whiteboard`) one a
    - **"@workspace #project-slug"** → re-route as Case A.
    - **"@workspace"** → re-route as Case B.
    - **"leave"** → leave the item in the main list untouched.
+
+### Optional pattern: route the item AND add an inline `TODO-N:` marker
+
+Sometimes the user's routing answer includes an explicit `TODO-N:` (with or without a
+message after the colon) — e.g. "route this to `@van_chores #electric_cupboard_fans
+TODO-3`". That means: file it normally (Case A/B, `Starting State` gets the raw item
+text as usual), **and additionally** add a `## Notes` section to the note with a
+`- [ ] TODO-N: <message>` checkbox line, per `note-schema.md`'s Inline TODO Markers
+convention. The marker is *in addition to* the `Starting State` text, not a replacement
+for it — don't drop one for the other.
+
+### Optional pattern: consolidating scattered TODOs into a new note
+
+Occasionally an inbox item implies gathering existing, related open items scattered
+across multiple already-filed notes into one new note, rather than describing something
+standalone (e.g. "GAS lib framework upgrades, document so far" turning into pulling every
+README/documentation `TODO-N:` out of several library notes into one new
+`documentation.md`). This is a bigger, multi-file operation — handle it as its own step,
+not as routine Case A/B filing:
+
+1. Identify the candidate existing items/notes that plausibly belong in scope.
+2. Get **explicit confirmation** from the user on exactly which ones are in scope before
+   touching anything — a multi-select list of candidates works well here.
+3. Move (don't duplicate) the confirmed content: delete it from the source note, bump
+   that note's `updated:` date, and add it to the new consolidated note.
+4. If a source note ends up with no remaining live content of its own (e.g. its entire
+   purpose was superseded), retire it to `<workspace>/archive/` (`para: archive`,
+   `status: complete` or `cancelled`, per `note-schema.md`'s archive convention) with a
+   one-line pointer back to the new note, rather than deleting it outright.
 
 ---
 
